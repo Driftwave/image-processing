@@ -8,6 +8,7 @@ Usage:
 import glob
 import os
 import sys
+import traceback
 
 from docopt import docopt
 from PIL import Image, ImageOps
@@ -45,9 +46,13 @@ def main():
         output_path = os.path.join(output_dir, os.path.basename(img_path))
         if os.path.exists(output_path):
             continue
-        img = Image.open(img_path)
-        img = ImageOps.fit(img, size, method=Image.BICUBIC)
-        img.save(output_path)
+        try:
+            img = Image.open(img_path)
+            img = ImageOps.fit(img, size, method=Image.BICUBIC)
+            img.save(output_path)
+        except Exception as e:
+            tb = ''.join(traceback.format_exception(None, e, e.__traceback__))
+            print('%s generated an exception, skipping: %s' % (img_path, tb))
 
 
 if __name__ == '__main__':
