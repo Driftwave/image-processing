@@ -30,7 +30,7 @@ def create_module_graph(module_spec):
 def run_bottleneck_on_image(sess, image_data, image_data_tensor, decoded_image_tensor, resized_image_tensor,
                             bottleneck_tensor):
     resized_input_values = sess.run(decoded_image_tensor, {image_data_tensor: image_data})
-    bottleneck_values = sess.run(bottleneck_tensor, {resized_input_tensor: resized_input_values})
+    bottleneck_values = sess.run(bottleneck_tensor, {resized_image_tensor: resized_input_values})
     bottleneck_values = np.squeeze(bottleneck_values)
     return bottleneck_values
 
