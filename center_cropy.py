@@ -7,6 +7,7 @@ Usage:
 """
 import glob
 import os
+import pathlib
 import sys
 import traceback
 
@@ -39,8 +40,7 @@ def main():
     size = parse_resolution_arg(resolution)
     resolution = str(size[0]) + 'x' + str(size[1])
     output_dir = os.path.join(output_prefix, resolution)
-    if not os.path.exists(output_dir):
-        os.mkdir(output_dir)
+    pathlib.Path(output_dir).mkdir(parents=True, exist_ok=True)
 
     for img_path in image_paths:
         output_path = os.path.join(output_dir, os.path.basename(img_path))

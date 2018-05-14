@@ -7,6 +7,7 @@ Usage:
 """
 import glob
 import os
+import pathlib
 
 from docopt import docopt
 import numpy as np
@@ -65,8 +66,7 @@ def main():
         jpeg_data_tensor, decoded_image_tensor = add_jpeg_decoding(module_spec)
 
         output_dir = os.path.join(output_prefix, 'feature_vectors', MODULE_NAME)
-        if not os.path.exists(output_dir):
-            os.mkdir(output_dir)
+        pathlib.Path(output_dir).mkdir(parents=True, exist_ok=True)
 
         for img_path in image_paths:
             fn = os.path.basename(img_path)
