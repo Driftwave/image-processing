@@ -64,7 +64,7 @@ def main():
         sess.run(init)
         jpeg_data_tensor, decoded_image_tensor = add_jpeg_decoding(module_spec)
 
-        output_dir = os.path.join(output_prefix, 'feature_vectors', MODULE_NAME)
+        output_dir = os.path.join(output_prefix, 'feature_vectors', module_name)
         pathlib.Path(output_dir).mkdir(parents=True, exist_ok=True)
 
         for img_path in image_paths:
