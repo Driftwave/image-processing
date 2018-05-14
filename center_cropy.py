@@ -36,7 +36,7 @@ def main():
         sys.exit(1)
 
     size = parse_resolution_arg(resolution)
-    resolution = size[0] + 'x' + size[1]
+    resolution = str(size[0]) + 'x' + str(size[1])
     output_dir = os.path.join(output_prefix, resolution)
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
