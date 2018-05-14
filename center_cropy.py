@@ -31,7 +31,7 @@ def main():
     output_prefix = args['<output_prefix>']
     resolution = args['<resolution>']
     image_paths = glob.glob(image_dir + '/*.jpg')
-    if len(image_path) == 0:
+    if len(image_paths) == 0:
         print('no images (or image directory) found.', file=sys.stderr)
         sys.exit(1)
 
