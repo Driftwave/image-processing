@@ -78,3 +78,7 @@ def main():
                 bottleneck_values = run_bottleneck_on_image(sess, jpeg_data_tensor, decoded_image_tensor,
                                                             resized_image_tensor, bottleneck_tensor)
                 np.save(output_path, bottleneck_values)
+
+
+if __name__ == '__main__':
+    main()
