@@ -75,7 +75,7 @@ def main():
             output_path = os.path.join(output_dir, fn)
             if not os.path.exists(output_path):
                 image_data = open(img_path, 'rb').read()
-                bottleneck_values = run_bottleneck_on_image(sess, jpeg_data_tensor, decoded_image_tensor,
+                bottleneck_values = run_bottleneck_on_image(sess, image_data, jpeg_data_tensor, decoded_image_tensor,
                                                             resized_image_tensor, bottleneck_tensor)
                 np.save(output_path, bottleneck_values)
 
