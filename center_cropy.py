@@ -3,7 +3,7 @@
 center_crop.py - Performs downscaling and center-crop of images in directory
 
 Usage:
-  center_crop.py <image_dir> <resolution>
+  center_crop.py <image_dir> <output_prefix> <resolution>
 """
 import glob
 import os
@@ -28,6 +28,7 @@ def parse_resolution_arg(resolution):
 def main():
     args = docopt(__doc__, help=True)
     image_dir = args['<image_dir>']
+    output_prefix = args['<output_prefix>']
     resolution = args['<resolution>']
     image_paths = glob.glob(image_dir + '/*.jpg')
     if len(image_path) == 0:
@@ -36,7 +37,7 @@ def main():
 
         size = parse_resolution_arg(resolution)
         resolution = width + 'x' + height
-        output_dir = os.path.join(image_dir, resolution)
+        output_dir = os.path.join(output_prefix, resolution)
         if not os.path.exists(output_dir):
             os.mkdir(output_dir)
 
