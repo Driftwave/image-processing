@@ -3,7 +3,7 @@
 compute_image_vectors.py - computes image vectors of jpegs
 
 Usage:
-  compute_image_vectors.py <image_dir> <output_prefix>
+  compute_image_vectors.py <image_dir> <output_prefix> <module_name>
 """
 import glob
 import os
@@ -13,9 +13,6 @@ from docopt import docopt
 import numpy as np
 import tensorflow as tf
 import tensorflow_hub as hub
-
-MODULE_NAME = 'nasnet_large'
-MODULE_URL = 'https://tfhub.dev/google/imagenet/' + MODULE_NAME + '/feature_vector/1'
 
 
 def create_module_graph(module_spec):
@@ -52,12 +49,14 @@ def main():
     args = docopt(__doc__, help=True)
     image_dir = args['<image_dir>']
     output_prefix = args['<output_prefix>']
+    module_name = args['<module_name>']
+    module_url = 'https://tfhub.dev/google/imagenet/' + module_name + '/feature_vector/1'
     image_paths = glob.glob(image_dir + '/*.jpg')
     if len(image_paths) == 0:
         print('no images (or image directory) found.', file=sys.stderr)
         sys.exit(1)
 
-    module_spec = hub.load_module_spec(MODULE_URL)
+    module_spec = hub.load_module_spec(module_url)
     graph, bottleneck_tensor, resized_image_tensor = create_module_graph(module_spec)
 
     with tf.Session(graph=graph) as sess:
