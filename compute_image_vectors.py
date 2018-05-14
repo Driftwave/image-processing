@@ -23,7 +23,7 @@ def create_module_graph(module_spec):
         resized_image_tensor = tf.placeholder(tf.float32, [None, height, width, 3])
         m = hub.Module(module_spec)
         bottleneck_tensor = m(resized_image_tensor)
-    return graph, bottleneck_tensor, resized_input_tensor
+    return graph, bottleneck_tensor, resized_image_tensor
 
 
 def run_bottleneck_on_image(sess, image_data, image_data_tensor, decoded_image_tensor, resized_image_tensor,
