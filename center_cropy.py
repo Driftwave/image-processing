@@ -35,19 +35,19 @@ def main():
         print('no images (or image directory) found.', file=sys.stderr)
         sys.exit(1)
 
-        size = parse_resolution_arg(resolution)
-        resolution = width + 'x' + height
-        output_dir = os.path.join(output_prefix, resolution)
-        if not os.path.exists(output_dir):
-            os.mkdir(output_dir)
+    size = parse_resolution_arg(resolution)
+    resolution = width + 'x' + height
+    output_dir = os.path.join(output_prefix, resolution)
+    if not os.path.exists(output_dir):
+        os.mkdir(output_dir)
 
-        for img_path in image_paths:
-            output_path = os.path.join(output_dir, os.path.basename(img_path))
-            if os.path.exists(output_path):
-                continue
-            img = Image.open(img_path)
-            img = ImageOps.fit(img, size, method=Image.BICUBIC)
-            img.save(output_path)
+    for img_path in image_paths:
+        output_path = os.path.join(output_dir, os.path.basename(img_path))
+        if os.path.exists(output_path):
+            continue
+        img = Image.open(img_path)
+        img = ImageOps.fit(img, size, method=Image.BICUBIC)
+        img.save(output_path)
 
 
 if __name__ == '__main__':
