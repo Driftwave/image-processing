@@ -10,7 +10,7 @@ import os
 import sys
 
 from docopt import docopt
-from PIL import Image, ImageOpts
+from PIL import Image, ImageOps
 
 
 def parse_resolution_arg(resolution):
