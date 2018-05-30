@@ -99,20 +99,27 @@ def main():
         pathlib.Path(output_dir).mkdir(parents=True, exist_ok=True)
 
         all = []
+        num_computed = 0
         for img_path in image_paths:
             fn = path.basename(img_path)
             assert fn.endswith('.jpg')
             fn = fn[:-4] + '.npy'
             output_path = path.join(output_dir, fn)
-            if not path.exists(output_path):
+            if path.exists(output_path):
+                bottleneck_values = np.load(output_path)
+                all.append(bottleneck_values.reshape(1, bottleneck_values.size))
+            else:
                 image_data = open(img_path, 'rb').read()
                 bottleneck_values = run_bottleneck_on_image(sess, image_data, jpeg_data_tensor,
                                                             decoded_image_tensor,
                                                             resized_image_tensor, bottleneck_tensor)
                 np.save(output_path, bottleneck_values)
                 all.append(bottleneck_values.reshape(1, bottleneck_values.size))
+                num_computed += 1
 
-        np.save(path.join(output_path, 'all.npy'), np.concatenate(all))
+        all_path = path.join(output_path, 'all.npy')
+        if num_computed > 0 or not path.exists(all_path):
+            np.save(all_path, np.concatenate(all))
 
 
 if __name__ == '__main__':
