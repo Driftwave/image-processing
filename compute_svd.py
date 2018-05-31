@@ -8,6 +8,8 @@ compute_svd.py <numpy_data_file> [--standardize]
 from docopt import docopt
 import numpy as np
 from scipy import linalg
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 
 MAX_DIMS = 1024
 
@@ -23,16 +25,11 @@ def main():
     output_path = input_path[:-4] + addendum + '.npy'
 
     X = np.load(input_path)
-    X -= np.mean(X, axis=0)
-    if args['--standardize']:
-        X /= np.std(X, axis=0)
-    cov = np.cov(x, rowvar=False)
+    X = StandardScaler(copy=False, with_std=standardize).fit_transform(X)
 
-    evals, evecs = linalg.eigh(cov)
-    idx = np.argsort(evals)[::-1]
-    V = evecs[:, idx[:MAX_DIMS]]
-    X = X @ V
-
+    pca = PCA(n_components=MAX_DIMS)
+    X = pca.fit_transform(X)
+    print()
     np.save(output_path, X)
 
 
