@@ -67,6 +67,7 @@ def main():
     args = docopt(__doc__, help=True)
     image_dir = args['<image_dir>']
     image_paths = glob.glob(image_dir + '/*.jpg')
+    image_paths.sort()
     if len(image_paths) == 0:
         print('no images (or image directory) found.', file=sys.stderr)
         sys.exit(1)
@@ -99,7 +100,14 @@ def main():
         pathlib.Path(output_dir).mkdir(parents=True, exist_ok=True)
 
         all = []
-        num_computed = 0
+        all_path = path.join(output_dir, 'all.npy')
+
+        num_to_compute = len([x for x in image_paths if not path.exists(x)])
+        if num_to_compute == 0:
+            if path.exists(all_path):
+                print('all vectors already computed!')
+                sys.exit(2)
+
         for img_path in image_paths:
             fn = path.basename(img_path)
             assert fn.endswith('.jpg')
@@ -115,11 +123,8 @@ def main():
                                                             resized_image_tensor, bottleneck_tensor)
                 np.save(output_path, bottleneck_values)
                 all.append(bottleneck_values.reshape(1, bottleneck_values.size))
-                num_computed += 1
 
-        all_path = path.join(output_path, 'all.npy')
-        if num_computed > 0 or not path.exists(all_path):
-            np.save(all_path, np.concatenate(all))
+        np.save(all_path, np.concatenate(all))
 
 
 if __name__ == '__main__':
